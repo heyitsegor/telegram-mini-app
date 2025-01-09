@@ -1,15 +1,24 @@
 "use client";
 import { useEffect } from "react";
-import { init, retrieveLaunchParams } from "@telegram-apps/sdk-react";
+// import { init, retrieveLaunchParams } from "@telegram-apps/sdk-react";
 
-import { useClientOnce } from "@/hooks/useClientOnce";
+// import { useClientOnce } from "@/hooks/useClientOnce";
+
+import Header from "./components/header";
+import UserSection from "./components/user-section";
+import DealsCarousel from "./components/deals-carousel";
+import FitnessCoachCarousel from "./components/fitness-coach-carousel";
+import PromoDeal from "./components/promo-deal";
+import GroupTraining from "./components/group-training";
+import Footer from "./components/footer";
+import Container from "./components/container";
 
 export default function Home() {
-  useClientOnce(() => {
-    init();
-  });
+  // useClientOnce(() => {
+  //   init();
+  // });
 
-  const { initDataRaw, initData } = retrieveLaunchParams();
+  // const { initDataRaw, initData } = retrieveLaunchParams();
 
   useEffect(() => {
     const getUserChatData = async () => {
@@ -20,26 +29,27 @@ export default function Home() {
     getUserChatData();
   }, []);
 
-  useEffect(() => {
-    console.log(initData?.chat);
-  }, [initData]);
+  // useEffect(() => {
+  //   console.log(initData?.chat);
+  // }, [initData]);
 
-  useEffect(() => {
-    console.log(initDataRaw);
-  }, [initDataRaw]);
+  // useEffect(() => {
+  //   console.log(initDataRaw);
+  // }, [initDataRaw]);
 
   return (
-    <main className="bg-black flex flex-col items-center gap-2 text-white pt-20 text-center min-h-screen">
-      <h1>Добро пожаловать в Mini App</h1>
-
-      <div className="">
-        <p>👤 User: {initData ? initData.user?.firstName : "loaing..."}</p>
-        <p>🆔 UserID: {initData ? initData.user?.id : "loading..."}</p>
-        <p>💬 ChatID: {initData ? JSON.stringify(initData) : "loading..."}</p>
-      </div>
-      <button className="bg-blue-600 w-fit text-white border-none px-6 py-3 rounded-md">
-        Отправить данные
-      </button>
-    </main>
+    <>
+      <main className="flex flex-col bg-white">
+        <Container>
+          <Header />
+          <UserSection />
+          <DealsCarousel />
+          <FitnessCoachCarousel />
+          <PromoDeal />
+          <GroupTraining />
+        </Container>
+      </main>
+      <Footer />
+    </>
   );
 }
