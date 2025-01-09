@@ -3,11 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model TelegramChats {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  chat_id  String  @unique
+  id      String @id @default(uuid())
+  chat_id String @unique
 }
