@@ -1,3 +1,4 @@
+/* eslint-disable */
 "use client";
 import { useEffect } from "react";
 import { init, retrieveLaunchParams } from "@telegram-apps/sdk-react";
@@ -29,7 +30,7 @@ export default function Home() {
 
   useEffect(() => {
     const getUserChatData = async () => {
-      const userData = await fetch("/api/user-chats");
+      const userData = await fetch("/api/telegram-chats");
       console.log(userData);
     };
 
