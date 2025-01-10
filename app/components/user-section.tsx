@@ -6,7 +6,11 @@ import { Button } from "@/components/ui/button";
 
 import React from "react";
 
-const UserSection = () => {
+type UserSectionProps = {
+  onSendCustomMessage: () => void;
+};
+
+const UserSection = ({ onSendCustomMessage }: UserSectionProps) => {
   return (
     <div className="mt-3 grid grid-cols-2 gap-2">
       <div className="col-span-2 p-4 rounded-xl bg-background flex flex-col gap-3 font-bold text-sm leading-none">
@@ -39,7 +43,12 @@ const UserSection = () => {
           <span>Годовой абонемент</span>
           <span className="text-green text-xs">4 месяца</span>
         </div>
-        <Button className="w-fit" variant="purple" size="sm">
+        <Button
+          onClick={onSendCustomMessage}
+          className="w-fit"
+          variant="purple"
+          size="sm"
+        >
           Продлить
         </Button>
       </div>

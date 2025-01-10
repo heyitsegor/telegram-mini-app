@@ -29,26 +29,79 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const getUserChatData = async () => {
-      const userData = await fetch("/api/telegram-chats");
-      console.log(userData);
-    };
-
-    getUserChatData();
-  }, []);
-
-  useEffect(() => {
     const { initData } = retrieveLaunchParams();
 
-    console.log(initData);
+    const checkIfUserAlreadyInDatabase = async () => {
+      const telegramChat = await fetch(
+        `/api/telegram-chats?chatId=${initData?.user?.id}`
+      )
+        .then((response) => response.json())
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      console.log(
+        `/api/telegram-chats?chatId=${initData?.user?.id}`,
+        telegramChat
+      );
+
+      if (telegramChat?.length > 0) return;
+
+      await sendCustomMessage(
+        `Бот открыт впервые, привет, ${initData?.user?.firstName}!`
+      );
+
+      const serverResponse = await fetch("api/telegram-chats", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chatId: String(initData?.user?.id),
+        }),
+      })
+        .then((response) => response.json())
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+
+      console.log(serverResponse);
+    };
+
+    checkIfUserAlreadyInDatabase();
   }, [window.Telegram]);
+
+  const sendCustomMessage = async (message: string) => {
+    const { initData } = retrieveLaunchParams();
+
+    const botResponse = await fetch("api/send-message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chatId: initData?.user?.id,
+        text: message,
+      }),
+    })
+      .then((response) => response.json())
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+    console.log(botResponse);
+  };
 
   return (
     <>
       <main className="flex flex-col bg-white">
         <Container>
           <Header />
-          <UserSection />
+          <UserSection
+            onSendCustomMessage={() =>
+              sendCustomMessage(`This message was sent by a button press`)
+            }
+          />
           <DealsCarousel />
           <FitnessCoachCarousel />
           <PromoDeal />
