@@ -19,7 +19,8 @@ export const POST = async (req: NextRequest) => {
 
 export async function GET(req: NextRequest) {
   try {
-    const { chatId } = await req.json();
+    const searchParams = req.nextUrl.searchParams;
+    const chatId = searchParams.get("chatId");
     const telegramChat = await getTelegramChats(chatId ?? undefined);
     return NextResponse.json(telegramChat, { status: 200 });
   } catch (error) {
