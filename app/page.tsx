@@ -1,8 +1,7 @@
 "use client";
 import { useEffect } from "react";
-// import { init, retrieveLaunchParams } from "@telegram-apps/sdk-react";
-
-// import { useClientOnce } from "@/hooks/useClientOnce";
+import { init, retrieveLaunchParams } from "@telegram-apps/sdk-react";
+import { useClientOnce } from "@/hooks/useClientOnce";
 
 import Header from "./components/header";
 import UserSection from "./components/user-section";
@@ -13,12 +12,20 @@ import GroupTraining from "./components/group-training";
 import Footer from "./components/footer";
 import Container from "./components/container";
 
-export default function Home() {
-  // useClientOnce(() => {
-  //   init();
-  // });
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: {
+        initData?: string;
+      };
+    };
+  }
+}
 
-  // const { initDataRaw, initData } = retrieveLaunchParams();
+export default function Home() {
+  useClientOnce(() => {
+    init();
+  });
 
   useEffect(() => {
     const getUserChatData = async () => {
@@ -29,13 +36,11 @@ export default function Home() {
     getUserChatData();
   }, []);
 
-  // useEffect(() => {
-  //   console.log(initData?.chat);
-  // }, [initData]);
+  useEffect(() => {
+    const { initData } = retrieveLaunchParams();
 
-  // useEffect(() => {
-  //   console.log(initDataRaw);
-  // }, [initDataRaw]);
+    console.log(initData);
+  }, [window.Telegram]);
 
   return (
     <>
