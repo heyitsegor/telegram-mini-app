@@ -1,6 +1,6 @@
 import {
   createTelegramChat,
-  getAllTelegramChats,
+  getTelegramChats,
   deleteTelegramChat,
 } from "@/prisma/telegram-chats";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,9 +17,10 @@ export const POST = async (req: NextRequest) => {
   }
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
-    const telegramChat = await getAllTelegramChats();
+    const { chatId } = await req.json();
+    const telegramChat = await getTelegramChats(chatId ?? undefined);
     return NextResponse.json(telegramChat, { status: 200 });
   } catch (error) {
     const errorMessage =

@@ -18,9 +18,13 @@ export const createTelegramChat = async (chatId: string) => {
   }
 };
 
-export const getAllTelegramChats = async () => {
+export const getTelegramChats = async (chatId?: string) => {
   try {
-    const telegramChats = await prisma.telegramChats.findMany();
+    const telegramChats = await prisma.telegramChats.findMany({
+      where: {
+        chat_id: chatId,
+      },
+    });
     return telegramChats;
   } catch (error) {
     const errorMessage =
